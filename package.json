@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "dev": "lune dev",
+    "format": "prettier -w --cache ."
+  },
+  "devDependencies": {
+    "@uwu/lune": "^1.2.1",
+    "@uwu/shelter-defs": "^1.1.0",
+    "prettier": "^3.0.3"
+  },
+  "type": "module",
+  "workspaces": [
+    "plugins/*"
+  ]
+}

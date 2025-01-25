@@ -1,1 +1,28 @@
-(()=>{var n=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var c=Object.getOwnPropertyNames;var d=Object.prototype.hasOwnProperty;var l=(e,s)=>{for(var u in s)n(e,u,{get:s[u],enumerable:!0})},C=(e,s,u,r)=>{if(s&&typeof s=="object"||typeof s=="function")for(let t of c(s))!d.call(e,t)&&t!==u&&n(e,t,{get:()=>s[t],enumerable:!(r=p(s,t))||r.enumerable});return e};var a=e=>C(n({},"__esModule",{value:!0}),e);var _={};l(_,{onLoad:()=>E,onUnload:()=>S});var{flux:o,http:h}=shelter;function i({invite:{guild:{id:e}}}){h.patch({body:{muted:!0,suppress_everyone:!0,suppress_roles:!0},url:`/users/@me/guilds/${e}/settings`})}function E(){o.dispatcher.subscribe("INVITE_ACCEPT_SUCCESS",i)}function S(){o.dispatcher.unsubscribe("INVITE_ACCEPT_SUCCESS",i)}return a(_);})();
+(function(exports) {
+
+"use strict";
+
+//#region plugins/mutenewguild/index.ts
+const { flux, http } = shelter;
+function handleJoin({ invite: { guild: { id } } }) {
+	http.patch({
+		body: {
+			muted: true,
+			suppress_everyone: true,
+			suppress_roles: true
+		},
+		url: `/users/@me/guilds/${id}/settings`
+	});
+}
+function onLoad() {
+	flux.dispatcher.subscribe("INVITE_ACCEPT_SUCCESS", handleJoin);
+}
+function onUnload() {
+	flux.dispatcher.unsubscribe("INVITE_ACCEPT_SUCCESS", handleJoin);
+}
+
+//#endregion
+exports.onLoad = onLoad
+exports.onUnload = onUnload
+return exports;
+})({});

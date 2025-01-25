@@ -6,6 +6,7 @@
     "lib": ["ESNext", "DOM"],
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "types": ["./styles.d.ts"]
   }
 }

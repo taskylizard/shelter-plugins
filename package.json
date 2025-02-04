@@ -1,17 +1,41 @@
 {
   "scripts": {
     "dev": "lune dev",
-    "format": "prettier -w --cache ."
+    "format": "biome format . --write",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint . --write",
+    "lint:fix:unsafe": "biome lint . --unsafe",
+    "api:prepare": "nitro prepare",
+    "api:dev": "nitro dev",
+    "api:build": "nitro build",
+    "api:preview": "node .output/server/index.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@taskylizard/biome-config": "^1.0.5",
+    "@types/cors": "^2.8.17",
     "@uwu/lune": "^1.5.1",
     "@uwu/shelter-defs": "^1.4.1",
+    "cors": "^2.8.5",
+    "drizzle-kit": "^0.30.4",
+    "nitro-cloudflare-dev": "^0.2.1",
+    "nitropack": "latest",
     "prettier": "^3.4.2",
-    "solid-js": "1.6.16"
+    "solid-js": "1.6.16",
+    "typescript": "^5.7.3",
+    "wrangler": "^3.107.2"
   },
   "type": "module",
-  "workspaces": [
-    "plugins/*"
-  ],
-  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321",
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "consola": "^3.4.0",
+    "drizzle-orm": "^0.39.1",
+    "drizzle-valibot": "^0.4.0",
+    "fflate": "^0.8.2",
+    "uint8array-extras": "^1.4.0",
+    "valibot": "1.0.0-beta.14"
+  }
 }

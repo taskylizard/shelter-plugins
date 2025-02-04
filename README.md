@@ -1,4 +1,1 @@
-# tasky's shelter plugins
-
-- Mute New Guild
-Automatically mute newly joined guilds.
+some spicy shelter plugins wohooooooo

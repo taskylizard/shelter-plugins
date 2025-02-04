@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@taskylizard/biome-config"],
+  "linter": {
+    "rules": {
+      "correctness": {
+        "useHookAtTopLevel": "off",
+        "noUndeclaredVariables": "off"
+      },
+      "style": {
+        "noDefaultExport": "off"
+      }
+    }
+  }
+}

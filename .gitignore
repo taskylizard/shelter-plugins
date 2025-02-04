@@ -2,3 +2,10 @@ node_modules
 dist
 .pnpm-debug.log
 .idea
+.data
+.nitro
+.cache
+.output
+.env
+dev.sqlite
+.wrangler

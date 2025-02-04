@@ -1,5 +1,5 @@
-import { defineConfig } from "@uwu/lune";
+import { defineConfig } from '@uwu/lune'
 
 export default defineConfig({
-  repoSubDir: "plugins",
-});
+  repoSubDir: 'plugins'
+})

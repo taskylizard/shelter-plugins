@@ -1,5 +1,9 @@
 {
-  "include": ["plugins/**/*.ts", "plugins/**/*.tsx", "node_modules/@uwu/shelter-defs/**/*.d.ts"],
+  "include": [
+    "plugins/**/*.ts",
+    "plugins/**/*.tsx",
+    "node_modules/@uwu/shelter-defs/**/*.d.ts"
+  ],
   "compilerOptions": {
     "noEmit": true,
     "target": "ESNext",
@@ -7,6 +11,7 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "moduleResolution": "node",
-    "types": ["./styles.d.ts"]
+    "types": ["./styles.d.ts"],
+    "strictNullChecks": true
   }
 }

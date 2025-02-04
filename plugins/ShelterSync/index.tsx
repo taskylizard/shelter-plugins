@@ -19,6 +19,7 @@ const {
 } = shelter
 import { deflateSync as deflate, inflateSync as inflate } from 'fflate'
 import { Flex } from '../../components/flex'
+import OAuthModal from './ui/OAuthModal'
 
 const DEFAULT_API_URL = 'http://localhost:3000'
 
@@ -38,7 +39,7 @@ async function checkOAuthSettings(): Promise<boolean> {
   try {
     const response = await fetch(`${store.apiUrl}/oauth/settings`)
     if (!response.ok) return false
-    
+
     const data = await response.json()
     return !!(data?.client_id && data?.redirect_uri)
   } catch (error) {
@@ -69,7 +70,7 @@ async function syncPlugins() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/octet-stream',
-        'Authorization': `Bearer ${store.accessToken}`
+        Authorization: `Bearer ${store.accessToken}`
       },
       body: compressed
     })
@@ -87,7 +88,10 @@ async function syncPlugins() {
     return await response.json()
   } catch (error) {
     console.error('Failed to sync plugins:', error)
-    showToast({ message: error.message || 'Failed to sync settings', type: 'error' })
+    showToast({
+      message: error.message || 'Failed to sync settings',
+      type: 'error'
+    })
   }
 }
 
@@ -97,7 +101,6 @@ export function settings() {
   const [tempApiUrl, setTempApiUrl] = createSignal(store.apiUrl)
   const [isLoading, setIsLoading] = createSignal(false)
   const [isAuthorizing, setIsAuthorizing] = createSignal(false)
-
 
   const handleSync = async () => {
     setSyncing(true)
@@ -110,21 +113,20 @@ export function settings() {
     try {
       const response = await fetch(`${store.apiUrl}/oauth/settings`)
       if (!response.ok) throw new Error('Failed to get OAuth settings')
-      
+
       const { client_id, redirect_uri } = await response.json()
-      if (!(client_id && redirect_uri)) throw new Error('Invalid OAuth settings')
-      
+      if (!(client_id && redirect_uri))
+        throw new Error('Invalid OAuth settings')
+
       // Open OAuth window
-      const authWindow = window.open(
-        `https://discord.com/oauth2/authorize?client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=identify`,
-        'ShelterSync OAuth',
-        'width=500,height=800'
-      )
+      const authWindow = <OAuthModal apiUrl={store.apiUrl} close={() => {}} />
 
       // Poll for OAuth completion
       const checkInterval = setInterval(async () => {
         try {
-          const tokenResponse = await fetch(`${store.apiUrl}/oauth/callback/check`)
+          const tokenResponse = await fetch(
+            `${store.apiUrl}/oauth/callback/check`
+          )
           if (tokenResponse.ok) {
             const { access_token } = await tokenResponse.json()
             store.accessToken = access_token
@@ -147,7 +149,6 @@ export function settings() {
           setIsAuthorizing(false)
         }
       }, 500)
-
     } catch (error) {
       console.error('Failed to start OAuth flow:', error)
       showToast({ message: 'Failed to start authorization', type: 'error' })
@@ -161,7 +162,7 @@ export function settings() {
     try {
       const response = await fetch(`${store.apiUrl}/settings`, {
         headers: {
-          'Authorization': `Bearer ${store.accessToken}`
+          Authorization: `Bearer ${store.accessToken}`
         }
       })
 
@@ -181,7 +182,7 @@ export function settings() {
       const { plugins } = JSON.parse(jsonString)
 
       // Remove existing plugins
-      Object.keys(installedPlugins()).forEach(id => {
+      Object.keys(installedPlugins()).forEach((id) => {
         removePlugin(id)
       })
 
@@ -193,7 +194,10 @@ export function settings() {
       showToast({ message: 'Settings pulled successfully!', type: 'success' })
     } catch (error) {
       console.error('Failed to pull settings:', error)
-      showToast({ message: error.message || 'Failed to pull settings', type: 'error' })
+      showToast({
+        message: error.message || 'Failed to pull settings',
+        type: 'error'
+      })
     } finally {
       setIsLoading(false)
     }
@@ -205,7 +209,7 @@ export function settings() {
       const response = await fetch(`${store.apiUrl}/settings`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${store.accessToken}`
+          Authorization: `Bearer ${store.accessToken}`
         }
       })
 
@@ -221,7 +225,10 @@ export function settings() {
       showToast({ message: 'Settings deleted successfully!', type: 'success' })
     } catch (error) {
       console.error('Failed to delete settings:', error)
-      showToast({ message: error.message || 'Failed to delete settings', type: 'error' })
+      showToast({
+        message: error.message || 'Failed to delete settings',
+        type: 'error'
+      })
     } finally {
       setIsLoading(false)
     }
@@ -247,7 +254,6 @@ export function settings() {
     // Reset OAuth verification when URL changes
     store.oauthVerified = false
     store.accessToken = null
-  
   }
 
   const saveApiUrl = async () => {
@@ -255,7 +261,6 @@ export function settings() {
     // Check OAuth settings when URL is saved
     const verified = await checkOAuthSettings()
     store.oauthVerified = verified
-
   }
 
   return (
@@ -297,14 +302,20 @@ export function settings() {
         <Button
           size={ButtonSizes.MEDIUM}
           onClick={handleAuthorize}
-          disabled={isAuthorizing() || syncing() || isLoading() || !store.oauthVerified}
+          disabled={
+            isAuthorizing() || syncing() || isLoading() || !store.oauthVerified
+          }
           look={ButtonLooks.FILLED}
           color={ButtonColors.GREEN}
         >
-          {isAuthorizing() ? 'Authorizing...' : store.oauthVerified ? 'Unauthorize' : 'Authorize'}
+          {isAuthorizing()
+            ? 'Authorizing...'
+            : store.oauthVerified
+              ? 'Unauthorize'
+              : 'Authorize'}
         </Button>
 
-<Space />
+        <Space />
 
         <Button
           size={ButtonSizes.MEDIUM}
@@ -314,7 +325,7 @@ export function settings() {
           {syncing() ? 'Syncing...' : 'Sync Now'}
         </Button>
 
-<Space />
+        <Space />
 
         <Button
           size={ButtonSizes.MEDIUM}
@@ -323,7 +334,7 @@ export function settings() {
         >
           {isLoading() ? 'Pulling...' : 'Pull Data'}
         </Button>
-        
+
         <Space />
 
         <Button
@@ -344,7 +355,7 @@ export async function onLoad() {
   if (store.autoSync && store.oauthVerified) {
     syncIntervalId = window.setInterval(syncPlugins, SYNC_INTERVAL * 60 * 1000)
   }
-  
+
   // Check OAuth settings on load
   const verified = await checkOAuthSettings()
   store.oauthVerified = verified

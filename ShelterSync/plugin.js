@@ -2006,13 +2006,13 @@ var require_solid_js = __commonJS({ "solid-js"(exports, module) {
 
 //#endregion
 //#region components/flex.tsx
-var import_web$1 = __toESM(require_web(), 1);
-var import_web$2 = __toESM(require_web(), 1);
-var import_web$3 = __toESM(require_web(), 1);
-var import_web$4 = __toESM(require_web(), 1);
-var import_web$5 = __toESM(require_web(), 1);
+var import_web$6 = __toESM(require_web(), 1);
+var import_web$7 = __toESM(require_web(), 1);
+var import_web$8 = __toESM(require_web(), 1);
+var import_web$9 = __toESM(require_web(), 1);
+var import_web$10 = __toESM(require_web(), 1);
 var import_solid_js = __toESM(require_solid_js(), 1);
-const _tmpl$ = /*#__PURE__*/ (0, import_web$1.template)(`<div></div>`, 2);
+const _tmpl$$1 = /*#__PURE__*/ (0, import_web$6.template)(`<div></div>`, 2);
 const styles = {
 	base: {
 		display: "flex",
@@ -2053,8 +2053,8 @@ const Flex = (rawProps) => {
 		"class"
 	]);
 	return (() => {
-		const _el$ = (0, import_web$2.getNextElement)(_tmpl$);
-		(0, import_web$4.spread)(_el$, (0, import_web$5.mergeProps)({
+		const _el$ = (0, import_web$7.getNextElement)(_tmpl$$1);
+		(0, import_web$9.spread)(_el$, (0, import_web$10.mergeProps)({
 			get style() {
 				return {
 					...styles.base,
@@ -2067,10 +2067,76 @@ const Flex = (rawProps) => {
 				return local.class;
 			}
 		}, others), false, false);
-		(0, import_web$3.runHydrationEvents)();
+		(0, import_web$8.runHydrationEvents)();
 		return _el$;
 	})();
 };
+
+//#endregion
+//#region plugins/ShelterSync/ui/OAuthModal.tsx
+var import_web$1 = __toESM(require_web(), 1);
+var import_web$2 = __toESM(require_web(), 1);
+var import_web$3 = __toESM(require_web(), 1);
+var import_web$4 = __toESM(require_web(), 1);
+var import_web$5 = __toESM(require_web(), 1);
+const _tmpl$ = /*#__PURE__*/ (0, import_web$1.template)(`<div><!#><!/><!#><!/><!#><!/><!#><!/><!#><!/></div>`, 12);
+const { ui: { ModalRoot, ModalHeader, ModalConfirmFooter, ModalSizes, Header: Header$1, HeaderTags: HeaderTags$1, TextBox: TextBox$1, Divider: Divider$1, Button: Button$1 }, solid: { createSignal: createSignal$1 }, plugin: { store: store$1 } } = shelter;
+const OAuthModal = (props) => {
+	const [token, setToken] = createSignal$1("");
+	return (0, import_web$5.createComponent)(ModalRoot, {
+		get size() {
+			return ModalSizes.SMALL;
+		},
+		get children() {
+			return [
+				(0, import_web$5.createComponent)(ModalHeader, {
+					close,
+					children: "Authorize"
+				}),
+				(() => {
+					const _el$ = (0, import_web$2.getNextElement)(_tmpl$), _el$2 = _el$.firstChild, [_el$3, _co$] = (0, import_web$3.getNextMarker)(_el$2.nextSibling), _el$4 = _el$3.nextSibling, [_el$5, _co$2] = (0, import_web$3.getNextMarker)(_el$4.nextSibling), _el$6 = _el$5.nextSibling, [_el$7, _co$3] = (0, import_web$3.getNextMarker)(_el$6.nextSibling), _el$8 = _el$7.nextSibling, [_el$9, _co$4] = (0, import_web$3.getNextMarker)(_el$8.nextSibling), _el$10 = _el$9.nextSibling, [_el$11, _co$5] = (0, import_web$3.getNextMarker)(_el$10.nextSibling);
+					_el$.style.setProperty("display", "flex");
+					_el$.style.setProperty("flex-direction", "column");
+					_el$.style.setProperty("gap", "0.25rem");
+					_el$.style.setProperty("padding", "16px");
+					_el$.style.setProperty("padding-top", "0");
+					(0, import_web$4.insert)(_el$, (0, import_web$5.createComponent)(Header$1, {
+						get tag() {
+							return HeaderTags$1.H5;
+						},
+						children: "1. Authorize via your web browser, and copy the token"
+					}), _el$3, _co$);
+					(0, import_web$4.insert)(_el$, (0, import_web$5.createComponent)(Button$1, {
+						style: { width: "100%" },
+						onClick: () => open(props.apiUrl),
+						children: "Authorize"
+					}), _el$5, _co$2);
+					(0, import_web$4.insert)(_el$, (0, import_web$5.createComponent)(Divider$1, { mt: "0.25rem" }), _el$7, _co$3);
+					(0, import_web$4.insert)(_el$, (0, import_web$5.createComponent)(Header$1, {
+						get tag() {
+							return HeaderTags$1.H5;
+						},
+						children: "2. Paste the token into the textbox"
+					}), _el$9, _co$4);
+					(0, import_web$4.insert)(_el$, (0, import_web$5.createComponent)(TextBox$1, {
+						placeholder: "token-goes-here",
+						get value() {
+							return token();
+						},
+						onInput: setToken
+					}), _el$11, _co$5);
+					return _el$;
+				})(),
+				(0, import_web$5.createComponent)(ModalConfirmFooter, {
+					type: "neutral",
+					close,
+					onConfirm: () => store$1.token = token()
+				})
+			];
+		}
+	});
+};
+var OAuthModal_default = OAuthModal;
 
 //#endregion
 //#region plugins/ShelterSync/index.tsx
@@ -2107,7 +2173,7 @@ async function syncPlugins() {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/octet-stream",
-				"Authorization": `Bearer ${store.accessToken}`
+				Authorization: `Bearer ${store.accessToken}`
 			},
 			body: compressed
 		});
@@ -2149,7 +2215,12 @@ function settings() {
 			if (!response.ok) throw new Error("Failed to get OAuth settings");
 			const { client_id, redirect_uri } = await response.json();
 			if (!(client_id && redirect_uri)) throw new Error("Invalid OAuth settings");
-			const authWindow = window.open(`https://discord.com/oauth2/authorize?client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=identify`, "ShelterSync OAuth", "width=500,height=800");
+			const authWindow = (0, import_web.createComponent)(OAuthModal_default, {
+				get apiUrl() {
+					return store.apiUrl;
+				},
+				close: () => {}
+			});
 			const checkInterval = setInterval(async () => {
 				try {
 					const tokenResponse = await fetch(`${store.apiUrl}/oauth/callback/check`);
@@ -2188,7 +2259,7 @@ function settings() {
 	const handlePull = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`${store.apiUrl}/settings`, { headers: { "Authorization": `Bearer ${store.accessToken}` } });
+			const response = await fetch(`${store.apiUrl}/settings`, { headers: { Authorization: `Bearer ${store.accessToken}` } });
 			if (!response.ok) {
 				if (response.status === 401) {
 					store.oauthVerified = false;
@@ -2227,7 +2298,7 @@ function settings() {
 		try {
 			const response = await fetch(`${store.apiUrl}/settings`, {
 				method: "DELETE",
-				headers: { "Authorization": `Bearer ${store.accessToken}` }
+				headers: { Authorization: `Bearer ${store.accessToken}` }
 			});
 			if (!response.ok) {
 				if (response.status === 401) {

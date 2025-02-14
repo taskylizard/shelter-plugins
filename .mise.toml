@@ -17,3 +17,17 @@ outputs = ['node_modules/.pnpm/lock.yaml']
 description = 'Calls your dev script in `package.json`'
 run = 'node --run dev -- '
 depends = ['pnpm-install']
+
+[tasks."api:dev"]
+description = 'Runs the API server'
+run = 'node --run api:dev -- '
+depends = ['pnpm-install']
+
+[tasks."dev:sync:plugin"]
+description = "Runs the plugin dev server"
+run = "node --run dev -- plugins/ShelterSync"
+depends = ['pnpm-install']
+
+[tasks."dev:sync"]
+description = 'Runs the sync server and plugin dev server'
+depends = ['api:dev', 'dev:sync:plugin']
